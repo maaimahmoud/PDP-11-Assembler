@@ -1,0 +1,25 @@
+;mov r1,r2
+;add @r2,@r3
+;sub 200(r1),5(r2)
+;and  @( r2 )+, @-(r7) 
+;inc r6
+;inc 300(r6)
+;L2: mov x, r1
+;add r2, @r3
+;br l3
+;L3:
+;jsr l1
+;l1:
+;hlt
+;define x 5
+l1: mov y,@r2
+mov 20(r1),(r1)+
+jsr maN
+mov #1,3(r7)
+ma:
+mov r2,x
+hlt
+define x 10
+define y 3
+
+end
