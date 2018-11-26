@@ -185,20 +185,57 @@ bool printOperand(string& op,int &luggage,int opnum){
 
 }
 
+// void firstPass(){
 
+// 	in.open("code.txt",ios::in);
+// 	string input,label="";
+
+// 	getline(in, input);
+
+// 	for (auto & c : input) c = toupper(c);
+
+// 	while (input.find("END")==-1)
+// 	{
+// 		cout<<input<<endl;
+// 		int colon=input.find(':');
+
+// 		if(colon!=-1){
+// 			label=input.substr(0,colon);
+// 			cout<<label<<endl;
+// 			eraseAllSubStr(input,input.substr(0,colon+1));
+// 			eraseAllSubStr(label," ");
+// 			if(label!="")
+// 				labels.insert(pair<string,int>(label,PC));
+				
+// 		}
+
+// 		l++; PC++;
+// 		getline(in, input);
+// 		for (auto & c : input) c = toupper(c);
+
+// 	}
+
+// 	in.close();
+
+// }
 void removeComment(string &inp){
 
 	int com=inp.find(';');
 	if(com!=-1){
+		// cout<<inp.substr(com,inp.length())<<endl;
 		eraseAllSubStr(inp,inp.substr(com,inp.length()));
 	}
 }
 
 bool getVal(string op){
 	int space= op.find(" ");
+	if(space==-1){
+		space=op.find("	");//tab
+	}
 	if(space!=-1){
 		op=op.substr(space,op.length());
 		eraseAllSubStr(op," ");
+		eraseAllSubStr(op,"	");//tab
 		if(is_number(op)){
 			bitset<16> y(stoi(op));
 			out << y << endl;
@@ -247,6 +284,7 @@ void Pass(int num){
 			// cout<<label<<endl;
 			eraseAllSubStr(input,input.substr(0,colon+1));
 			eraseAllSubStr(label," ");
+			eraseAllSubStr(label,"	");//tab
 			if(label==""){
 				cout<<": has no associated name, will be ignored"<<endl;
 			}
@@ -256,6 +294,9 @@ void Pass(int num){
 
 		input.erase(0,index_first_letter(input));
 		int space = input.find(' ');
+		if(space==-1){
+			space=input.find('	');//tab
+		}
 		int comma = input.find(',');
 
 		
@@ -283,6 +324,7 @@ void Pass(int num){
 	
 		opCode = input.substr(0,space); 
 		eraseAllSubStr(opCode," ");
+		eraseAllSubStr(opCode,"	");//tab
 
 		if(opCode=="") ///empty string
 		{
@@ -302,6 +344,9 @@ void Pass(int num){
 			}
 			else{
 				int sp=firstOperand.find(" ");
+				if(sp==-1){
+					sp=firstOperand.find("	");//tab
+				}
 				string var=firstOperand.substr(0,sp);
 				variables.insert(pair<string,int>(var,PC-1));
 
@@ -327,11 +372,16 @@ void Pass(int num){
 
 		map<string, pair<int, int>>::iterator instructionIt = instructions.find(opCode);
 		eraseAllSubStr(firstOperand," ");
+		eraseAllSubStr(firstOperand,"	");//tabs
 		eraseAllSubStr(SecondOperand," ");
+		eraseAllSubStr(SecondOperand,"	");//tabs
+
+		// cout<<"OP"<<opCode<<"FIRST"<<firstOperand<<"SEC"<<SecondOperand<<"11"<<endl;
+		// cout<<SecondOperand[2]<<int(SecondOperand[2])<<"space"<<int(' ')<<endl;
 
 	
 		if (instructionIt == instructions.end()){
-			cout << "Instruction is not included in instruction set" << endl;
+			cout << "Instruction"<<opCode<<" is not included in instruction set at line " <<l<< endl;
 			er=true;// break;
 		}
 			//check for labels and variables
@@ -416,6 +466,8 @@ void Pass(int num){
 				else// one operand inst
 				if(instructionIt->second.first==9){
 					success=printOperand(firstOperand,lug1,2);
+					bitset<2> x(0);
+					out<<x;
 					if(!success){
 						cout<<"Error at line "<<l<<" first op"<<endl;
 						er=true;// break;
