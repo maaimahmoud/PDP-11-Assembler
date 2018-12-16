@@ -238,6 +238,7 @@ bool getVal(string op){
 		eraseAllSubStr(op,"	");//tab
 		if(is_number(op)){
 			bitset<16> y(stoi(op));
+			
 			out << y << endl;
 			return true;
 
@@ -265,11 +266,11 @@ void Pass(int num){
 
 	// while(1){}
 	for (auto & c : input) c = toupper(c);
-	PC++;
+	//PC++;
 
 	while (input.find("END")==-1)
 	{
-		l++; 
+		l++;
 		
 
 		string opCode = "", firstOperand = "", SecondOperand = "",label="";
@@ -332,6 +333,8 @@ void Pass(int num){
 			for (auto & c : input) c = toupper(c);
 			continue;
 		}
+		
+		out<<PC<<": ";
 		PC++;
 
 		if(opCode=="DEFINE"){
@@ -484,14 +487,21 @@ void Pass(int num){
 
 				
 			if(lug1!=2147483647){
+				
+
 				out<<endl;
+				out<<PC-1<<": ";
 				bitset<16> x(lug1);
 				out<<x;
 				// PC++;
 
 			}
 			if(lug2!=2147483647){
+
+
 				out<<endl;
+				out<<PC-1<<": ";
+
 				bitset<16> y(lug2);
 				out<<y;
 				// PC++;
